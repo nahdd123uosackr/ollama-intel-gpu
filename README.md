@@ -1,3 +1,9 @@
+# *Update*
+
+Due to changing priorities, I no longer have time to dedicate maintaining this project.  Hopefully the ipex team will support this natively in the future to make it easier for customers to use LLM technology on Intel products.  See other repos like https://github.com/eleiton/ollama-intel-arc for alternate support.
+
+-----
+
 # ollama-intel-gpu
 
 This repo illustrates the use of Ollama with support for Intel ARC GPU based via ipex-llm and Ollama Portable ZIP support.  Run the recently released [deepseek-r1](https://github.com/deepseek-ai/DeepSeek-R1) model on your local Intel ARC GPU based PC using Linux
