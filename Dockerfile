@@ -29,7 +29,7 @@ RUN mkdir -p /tmp/gpu && \
 # Install Ollama Portable Zip
 
 RUN cd / && \
-  wgethttps://github.com/ipex-llm/ipex-llm/releases/download/v2.3.0-nightly/ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz && \
+  wget https://github.com/ipex-llm/ipex-llm/releases/download/v2.3.0-nightly/ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz && \
   tar xvf ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz --strip-components=1 -C / && \
   rm ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz
 
