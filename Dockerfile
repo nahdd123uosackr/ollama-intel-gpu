@@ -1,29 +1,20 @@
-FROM ubuntu:22.04
+FROM intelanalytics/ipex-llm-inference-cpp-xpu:latest
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV OLLAMA_HOST=0.0.0.0
-ENV LIBVA_DRIVER_NAME=iHD
-ENV ONEAPI_DEVICE_SELECTOR=level_zero:0
-ENV OLLAMA_NUM_GPU=999
-ENV OLLAMA_NUM_PARALLEL=1
-ENV SYCL_CACHE_PERSISTENT=1
-ENV SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1
-ENV no_proxy=localhost,127.0.0.1
+# Ollama 설치
+WORKDIR /llm/ollama
 
-# 기본 도구 설치
-RUN apt-get update && apt-get install -y \
-    git curl wget unzip ca-certificates gnupg lsb-release sudo \
-    build-essential pciutils \
-    intel-media-va-driver-non-free libva2 libdrm2 vainfo \
-    && rm -rf /var/lib/apt/lists/*
+# 필요 시 수동 설치 스크립트 복사 (이미지에 포함되어 있을 수도 있음)
+COPY ./ollama /llm/ollama
 
-# oneAPI 설치 (필요 시)
-RUN mkdir -p /opt/intel && \
-    curl -O https://registrationcenter-download.intel.com/akdlm/IRC_NAS/9a20babe-3f91-4a63-8226-6d9d1b234a67/l_BaseKit_p_2024.1.0.585_offline.sh && \
-    chmod +x l_BaseKit_p_2024.1.0.585_offline.sh && \
-    ./l_BaseKit_p_2024.1.0.585_offline.sh -a --silent --eula accept \
-        --install-dir=/opt/intel --components=intel.oneapi.runtime.dpcpp
-
+# 환경변수 설정
+ENV OLLAMA_HOST=0.0.0.0 \
+    OLLAMA_NUM_GPU=999 \
+    no_proxy=localhost,127.0.0.1 \
+    ZES_ENABLE_SYSMAN=1 \
+    SYCL_CACHE_PERSISTENT=1 \
+    SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1 \
+    ONEAPI_DEVICE_SELECTOR=level_zero:0
+    
 # 환경변수 적용
 RUN echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc
 
