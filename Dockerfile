@@ -30,8 +30,8 @@ RUN mkdir -p /tmp/gpu && \
 
 RUN cd / && \
   wgethttps://github.com/ipex-llm/ipex-llm/releases/download/v2.3.0-nightly/ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz && \
-  tar xvf ${IPEXLLM_PORTABLE_ZIP_FILENAME} --strip-components=1 -C / && \
-  rm ${IPEXLLM_PORTABLE_ZIP_FILENAME}
+  tar xvf ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz --strip-components=1 -C / && \
+  rm ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz
 
 ENV OLLAMA_HOST=0.0.0.0:11434
 
