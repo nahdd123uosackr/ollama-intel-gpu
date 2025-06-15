@@ -1,15 +1,28 @@
 services:
   ollama-intel-gpu:
-    image: ghcr.io/open-webui/open-webui
+    image: ghcr.io/nahdd123uosackr/ollama-intel-gpu
     container_name: ollama-intel-gpu
     restart: always
     devices:
       - /dev/dri:/dev/dri
     volumes:
-      - ollama-intel-gpu:/root/.ollama
+      - /root/ollama/llm:/root/.ollama
     environment:
       - ONEAPI_DEVICE_SELECTOR=level_zero:3
       - IPEX_LLM_NUM_CTX=16384
+    ports:
+      - 11434:11434
+    networks:
+      - proxy
+      - br0
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.r-lama.rule=Host(`lama.131.186.17.46.nip.io`)
+      - traefik.http.routers.r-lama.entrypoints=websecure
+      - traefik.http.routers.r-lama.tls.certresolver=leresolver
+      - traefik.http.services.s-lama.loadbalancer.server.port=11434
+      - traefik.http.routers.r-lama.service=s-lama
+
   ollama-webui:
     image: ghcr.io/open-webui/open-webui
     container_name: ollama-webui
@@ -24,6 +37,22 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
+    networks:
+      - proxy
+      - br0
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.r-weblama.rule=Host(`weblama.131.186.17.46.nip.io`)
+      - traefik.http.routers.r-weblama.entrypoints=websecure
+      - traefik.http.routers.r-weblama.tls.certresolver=leresolver
+      - traefik.http.services.s-weblama.loadbalancer.server.port=9901
+      - traefik.http.routers.r-weblama.service=s-weblama
+
 volumes:
   ollama-webui: {}
   ollama-intel-gpu: {}
+networks:
+  proxy:
+    external: true
+  br0:
+    external: true
