@@ -1,11 +1,5 @@
 FROM intelanalytics/ipex-llm-inference-cpp-xpu:latest
 
-# Ollama 설치
-WORKDIR /llm/ollama
-
-# 필요 시 수동 설치 스크립트 복사 (이미지에 포함되어 있을 수도 있음)
-COPY ./ollama /llm/ollama
-
 # 환경변수 설정
 ENV OLLAMA_HOST=0.0.0.0 \
     OLLAMA_NUM_GPU=999 \
